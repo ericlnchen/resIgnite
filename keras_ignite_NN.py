@@ -11,9 +11,6 @@ from tensorflow.keras.models import load_model
 import numpy as np
 import matplotlib.pyplot as plt
 
-import cv2
-import os
-import pandas as pd
 
 from PIL import ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
