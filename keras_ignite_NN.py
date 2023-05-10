@@ -1,19 +1,18 @@
 import tensorflow as tf
 
-from tensorflow.keras import optimizers, regularizers
-from tensorflow.keras.utils import load_img, img_to_array
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Flatten, Dropout, BatchNormalization, Conv2D, MaxPooling2D
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras import regularizers
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Flatten, Dropout, Conv2D, MaxPooling2D
 from tensorflow.keras.models import load_model
+
+from PIL import ImageFile
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 import numpy as np
 import matplotlib.pyplot as plt
 
-
-from PIL import ImageFile
-ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 for device in tf.config.list_physical_devices():
     print(": {}".format(device.name))
@@ -23,30 +22,24 @@ valid_path = "data/valid"
 test_path = "data/test"
 additional_test_path = "data/additional_test"
 
-image_shape = (350,350,3)
-N_CLASSES = 2
-BATCH_SIZE = 256
 
-# defining the coefficient that our regularizer will use
-weight_decay = 1e-3
-
-# building a sequential CNN model and adding layers to it
-# dropout and the regularizer are used in general to prevent overfitting
 first_model = Sequential([
-    Conv2D(filters = 8 , kernel_size = 2, activation = 'relu', 
-    input_shape = image_shape), MaxPooling2D(pool_size = 2),
+    Conv2D(filters = 8 , kernel_size = 2, activation = 'relu', input_shape = (350,350,3)), MaxPooling2D(pool_size = 2),
     
-    Conv2D(filters = 16 , kernel_size = 2, activation = 'relu', 
-    input_shape = image_shape), MaxPooling2D(pool_size = 2),
+    Conv2D(filters = 16 , kernel_size = 2, activation = 'relu', input_shape = (350,350,3)), MaxPooling2D(pool_size = 2),
     
-    Conv2D(filters = 32 , kernel_size = 2, activation = 'relu',
-           kernel_regularizer = regularizers.l2(weight_decay)),
+    Conv2D(filters = 32 , kernel_size = 2, activation = 'relu', kernel_regularizer = regularizers.l2(1e-3)),
+
     MaxPooling2D(pool_size = 2),
     
     Dropout(0.3),
+
     Flatten(),
+
     Dense(300,activation='relu'),
+
     Dropout(0.3),
+    
     Dense(2,activation='softmax')
 ])
 

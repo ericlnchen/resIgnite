@@ -1,20 +1,17 @@
 import tensorflow as tf
 
-from tensorflow.keras import optimizers, regularizers
-from tensorflow.keras.utils import load_img, img_to_array
-from tensorflow.keras.activations import relu
-from tensorflow.keras.layers import Dense, Flatten, BatchNormalization, Conv2D, MaxPooling2D, ZeroPadding2D, Activation, AveragePooling2D, Add
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
+from tensorflow.keras.activations import relu
+from tensorflow.keras.layers import Dense, Flatten, BatchNormalization, Conv2D, MaxPooling2D, ZeroPadding2D, Activation, AveragePooling2D, Add
 from tensorflow.keras.regularizers import l2
 from tensorflow.keras.models import load_model
 
-import numpy as np
-import matplotlib.pyplot as plt
-
-
 from PIL import ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
+
+import numpy as np
+import matplotlib.pyplot as plt
 
 for device in tf.config.list_physical_devices():
     print(": {}".format(device.name))
@@ -23,10 +20,6 @@ train_path = "data/train"
 valid_path = "data/valid"
 test_path = "data/test"
 additional_test_path = 'data/additional_test'
-
-image_shape = (350,350,3)
-N_CLASSES = 2
-BATCH_SIZE = 256
 
 # implemented the identity and convolutional blocks according to the original ResNet diagram
 def res_identity(x, filters): 
